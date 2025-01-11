@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Impress.js</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="app" class="main-wrap">
+    <div class="tool-bar">
+        <button v-on:click="addSlide" id="new-slide-btn" class="button" title="Add new slide" type="button">
+            Add
+        </button>
+        <button v-on:click="goToChooseSlide" id="slides-btn" class="button" title="Return to choosing slides" type="button">
+            Slides
+        </button>
+        <button v-on:click="showOn" id="show-btn" class="button" title="Show presentation" type="button">
+            Show
+        </button>
+        <button v-on:click="save" id="save-btn" class="button" title="Save presentation" type="button">
+            Save
+        </button>
+        <button v-on:click="upload" id="upload-btn" class="button" title="Upload saved presentation" type="button">
+            Upload
+        </button>
+        <div class="themesSlider">
+            <button v-on:click="changeTheme(0)" value="blue" id="blue-theme-btn" class="button" type="button">
+                Blue
+            </button>
+            <button v-on:click="changeTheme(1)" id="simple-theme-btn" class="button" type="button">
+                Simple
+            </button>
+            <button v-on:click="changeTheme(2)" id="kids-theme-btn" class="button" type="button">
+                For kids
+            </button>
+        </div>
+        <button v-on:click="modalOn" id="about" class="button" type="button">
+            About
+        </button>
+    </div>
+
+    <div class="creator">
+        <div class="choose-slide" v-bind:class="{activePart: chooseSlideActive}">
+            <div class="slide-mini" v-for="(item,index) in pre.slidesArr" v-on:click="editSlide(index)">
+                <h3>{{item.title}}</h3>
+                <p>{{item.text}}</p>
+                <button v-on:click="deleteSlide(index,$event)" id="delete-btn" type="button">
+                    &#x2716;
+                </button>
+            </div>
+        </div>
+        <ul id="create-slides" class="edit" v-bind:class="{activePart: !chooseSlideActive}">
+            <li class="slide" v-for="(item,index) in pre.slidesArr">
+                <aside class="navigation">
+                    <button v-on:click="editSlide(index-1)" id="left-btn" class="button" type="button">
+                        &#8592;
+                    </button>
+                    <button v-on:click="editSlide(index+1)" id="right-btn" class="button" type="button">
+                        &#8594;
+                    </button>
+                </aside>
+                <div class="slide-edit-wrap">
+                    <input type="text" class="title-c" v-model="item.title">
+                    <textarea class="text-c" v-model="item.text"
+                              v-on:keydown="addBullet(index,$event)"></textarea>
+                    <p>{{index+1}}</p>
+                    <input type="text" class="footer-c" v-model="pre.footer">
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="show" v-bind:class="classObject" v-on:click="next">
+        <ul id="slides">
+            <li class="slide" v-for="(item,index) in pre.slidesArr">
+                <div class="slide-show-wrap">
+                    <h1 class="title-s">{{item.title}}</h1>
+                    <p class="text-s">{{item.text}}</p>
+                </div>
+                <div class="footer-show">
+                    <div class="full-line"></div>
+                    <p class="slide-number">{{index+1}}/{{pre.slidesArr.length}}</p>
+                    <p class="footer-s">{{pre.footer}}</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="modal">
+        <div class="modal-content">
+            <p>Easy tool for creating presentations.</p>
+            <div class="modal-buttonns-wrap">
+                <button class="modal-button cancel-button" v-on:click="modalOn">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
